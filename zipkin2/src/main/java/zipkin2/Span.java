@@ -13,21 +13,15 @@
  */
 package zipkin2;
 
+import zipkin2.codec.SpanBytesDecoder;
+import zipkin2.codec.SpanBytesEncoder;
+import zipkin2.internal.Nullable;
+
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.io.StreamCorruptedException;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TreeMap;
-import zipkin2.codec.SpanBytesDecoder;
-import zipkin2.codec.SpanBytesEncoder;
-import zipkin2.internal.Nullable;
+import java.util.*;
 
 /**
  * A trace is a series of spans (often RPC calls) which form a latency tree.
@@ -393,7 +387,8 @@ public final class Span implements Serializable { // for Spark and Flink jobs
 
     /** @see Span#name */
     public Builder name(@Nullable String name) {
-      this.name = name == null || name.isEmpty() ? null : name.toLowerCase(Locale.ROOT);
+      //this.name = name == null || name.isEmpty() ? null : name.toLowerCase(Locale.ROOT);
+      this.name = name == null || name.isEmpty() ? null : name;
       return this;
     }
 
