@@ -13,23 +13,15 @@
  */
 package zipkin;
 
-import java.io.ObjectStreamException;
-import java.io.Serializable;
-import java.io.StreamCorruptedException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 import zipkin.internal.Nullable;
 import zipkin.storage.StorageComponent;
 
-import static zipkin.internal.Util.UTF_8;
-import static zipkin.internal.Util.checkNotNull;
-import static zipkin.internal.Util.equal;
-import static zipkin.internal.Util.sortedList;
-import static zipkin.internal.Util.writeHexLong;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
+import java.io.StreamCorruptedException;
+import java.util.*;
+
+import static zipkin.internal.Util.*;
 
 /**
  * A trace is a series of spans (often RPC calls) which form a latency tree.
@@ -163,8 +155,10 @@ public final class Span implements Comparable<Span>, Serializable { // for Spark
   Span(Builder builder) {
     this.traceId = checkNotNull(builder.traceId, "traceId");
     this.traceIdHigh = builder.traceIdHigh != null ? builder.traceIdHigh : 0L;
+//    this.name = checkNotNull(builder.name, "name").isEmpty() ? ""
+//        : builder.name.toLowerCase(Locale.ROOT);
     this.name = checkNotNull(builder.name, "name").isEmpty() ? ""
-        : builder.name.toLowerCase(Locale.ROOT);
+      : builder.name;
     this.id = checkNotNull(builder.id, "id");
     this.parentId = builder.parentId;
     this.timestamp = builder.timestamp;
