@@ -19,7 +19,7 @@ export default component(function spanNames() {
   };
 
   this.after('initialize', function() {
-    this.on('uiChangeServiceName', this.updateSpanNames);
-    this.on('uiFirstLoadSpanNames', this.updateSpanNames);
+//    this.on('uiChangeServiceName', this.updateSpanNames);
+//    this.on('uiFirstLoadSpanNames', this.updateSpanNames);
   });
 });
