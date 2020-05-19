@@ -94,16 +94,16 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>com.mycila</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <!-- TODO: decide how we want to handle this -->
-            <phase>none</phase>
-          </execution>
-        </executions>
-      </plugin>
+      <!--<plugin>-->
+        <!--<groupId>com.mycila</groupId>-->
+        <!--<artifactId>license-maven-plugin</artifactId>-->
+        <!--<executions>-->
+          <!--<execution>-->
+            <!--&lt;!&ndash; TODO: decide how we want to handle this &ndash;&gt;-->
+            <!--<phase>none</phase>-->
+          <!--</execution>-->
+        <!--</executions>-->
+      <!--</plugin>-->
       <!-- disable retrolambda as this module doesn't include Java -->
       <plugin>
         <groupId>net.orfjackal.retrolambda</groupId>

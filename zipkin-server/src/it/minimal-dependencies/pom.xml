@@ -80,13 +80,14 @@
           <failIfNoTests>true</failIfNoTests>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>com.mycila</groupId>
-        <artifactId>license-maven-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
+      <!--<plugin>-->
+        <!--<groupId>com.mycila</groupId>-->
+        <!--<artifactId>license-maven-plugin</artifactId>-->
+        <!--<configuration>-->
+          <!--<skip>true</skip>-->
+        <!--</configuration>V2SpanReader.java-->
+
+      <!--</plugin>-->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
