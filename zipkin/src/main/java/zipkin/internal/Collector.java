@@ -13,15 +13,16 @@
  */
 package zipkin.internal;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
 import zipkin.collector.CollectorMetrics;
 import zipkin.storage.Callback;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static java.lang.String.format;
-import static java.util.logging.Level.FINE;
 import static zipkin.internal.Util.checkNotNull;
 
 public abstract class Collector<D, S> {
@@ -43,11 +44,11 @@ public abstract class Collector<D, S> {
   protected abstract String idString(S span);
 
   boolean shouldWarn() {
-    return logger.isLoggable(FINE);
+    return logger.isLoggable(Level.INFO);
   }
 
   void warn(String message, Throwable e) {
-    logger.log(FINE, message, e);
+    logger.log(Level.INFO, message, e);
   }
 
   protected void acceptSpans(byte[] serializedSpans, D decoder, Callback<Void> callback) {
@@ -90,7 +91,9 @@ public abstract class Collector<D, S> {
       if (isSampled(s)) sampled.add(s);
     }
     int dropped = input.size() - sampled.size();
-    if (dropped > 0) metrics.incrementSpansDropped(dropped);
+    if (dropped > 0) {
+      metrics.incrementSpansDropped(dropped);
+    }
     return sampled;
   }
 

@@ -13,11 +13,12 @@
  */
 package zipkin2.internal;
 
-import java.io.IOException;
 import zipkin2.Endpoint;
 import zipkin2.Span;
 import zipkin2.internal.JsonCodec.JsonReader;
 import zipkin2.internal.JsonCodec.JsonReaderAdapter;
+
+import java.io.IOException;
 
 public final class V2SpanReader implements JsonReaderAdapter<Span> {
   Span.Builder builder;
@@ -131,7 +132,11 @@ public final class V2SpanReader implements JsonReaderAdapter<Span> {
         }
       }
       reader.endObject();
-      if (!readField) throw new IllegalArgumentException("Empty endpoint at " + reader.getPath());
+      if (!readField) {
+        System.out.println("Empty endpoint at " + reader.getPath());
+        return result.serviceName("unknow").build();
+//        throw new IllegalArgumentException("Empty endpoint at " + reader.getPath());
+      }
       return result.build();
     }
 

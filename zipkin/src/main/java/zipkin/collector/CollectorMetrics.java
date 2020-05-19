@@ -13,10 +13,11 @@
  */
 package zipkin.collector;
 
-import java.util.List;
 import zipkin.Codec;
 import zipkin.storage.AsyncSpanConsumer;
 import zipkin.storage.Callback;
+
+import java.util.List;
 
 /**
  * Instrumented applications report spans over a transport such as Kafka. Zipkin collectors receive
@@ -116,6 +117,7 @@ public interface CollectorMetrics {
     }
 
     @Override public void incrementSpansDropped(int quantity) {
+      System.out.println("删除Span"+quantity);
     }
 
     @Override public String toString() {
