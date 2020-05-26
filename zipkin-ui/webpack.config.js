@@ -54,12 +54,14 @@ var webpackConfig = {
         ])
     ],
     devServer: {
+        host: '0.0.0.0',
         historyApiFallback: true,
         port: 9090,
         proxy: {
             "/api/*": proxyURL,
             "/config.json": proxyURL
-        }
+        },
+        disableHostCheck: true
     }
 };
 

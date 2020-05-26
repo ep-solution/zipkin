@@ -211,3 +211,8 @@
   background-color: #FFF;
   color: #666;
 }
+@media screen and (min-width: 900px) {
+  .modal-lg {
+    width: 1200px;
+}
+}

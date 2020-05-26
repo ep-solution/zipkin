@@ -1,0 +1,14 @@
+{
+  "name": "dagre-d3",
+  "homepage": "https://github.com/cpettitt/dagre-d3",
+  "version": "0.2.9",
+  "_release": "0.2.9",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.2.9",
+    "commit": "3b3428cb90c037749cdcb1c764b17b42260ac7bb"
+  },
+  "_source": "https://github.com/cpettitt/dagre-d3.git",
+  "_target": "~0.2.9",
+  "_originalSource": "dagre-d3"
+}
