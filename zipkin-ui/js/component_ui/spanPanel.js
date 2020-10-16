@@ -15,9 +15,9 @@ const entityMap = {
 
 const randomHex = (length) => {
   let returnStr = '';
-  const str = "abcdefghijklmnopqrstuvwxyz0123456789"
-  for (var i = 0; i < length; i++) {
-    var index = Math.round(Math.random() * (str.length - 1));
+  const str = 'abcdef0123456789';
+  for (let i = 0; i < length; i++) {
+    const index = Math.round(Math.random() * (str.length - 1));
     returnStr += str.substring(index, index + 1);
   }
   return returnStr;
@@ -142,134 +142,132 @@ export default component(function spanPanel() {
     // try {
     const $reSend = this.$node.find('.btn-reSend');
     const spanType = span.binaryAnnotations.find(item => item.key == 'SpanType');
-    if(/http(s?)$/.test(spanType.value.toLocaleLowerCase())){
-      $reSend.show()
-    }else{
-      $reSend.hide()
+    if (/http(s?)$/.test(spanType.value.toLocaleLowerCase())) {
+      $reSend.show();
+    } else {
+      $reSend.hide();
     }
-      
+
     // } catch (error) {
-      
+
     // }
-    if(!$reSend.data('hasEvent')){
+    if (!$reSend.data('hasEvent')) {
       $reSend.data('hasEvent', 1);
-      $reSend.click( event => {
-      let parms = {}
-      let csrfKey = ''
-      const traceId = randomHex(16);
-      const parmsList = span.binaryAnnotations.filter(item => item.key.startsWith('p_'));
-      const h_host = span.binaryAnnotations.find(item => item.key == 'h_host');
-      const host = h_host ? h_host.value : 'www.icourse163.org';
-      const path = span.binaryAnnotations.find(item => item.key == 'http.path');
-      const method = span.binaryAnnotations.find(item => item.key == 'http.method');
-      const ServerEnv = span.binaryAnnotations.find(item => item.key == 'ServerEnv');
-      const contentType = span.binaryAnnotations.find(item => item.key == 'h_content-type');
-      const cookie = span.binaryAnnotations.find(item => item.key == 'h_cookie');
+      $reSend.click(event => {
+        let parms = {};
+        let csrfKey = '';
+        const traceId = randomHex(16);
+        const parmsList = span.binaryAnnotations.filter(item => item.key.startsWith('p_'));
+        const h_host = span.binaryAnnotations.find(item => item.key == 'h_host');
+        const host = h_host ? h_host.value : 'www.icourse163.org';
+        const path = span.binaryAnnotations.find(item => item.key == 'http.path');
+        const method = span.binaryAnnotations.find(item => item.key == 'http.method');
+        const ServerEnv = span.binaryAnnotations.find(item => item.key == 'ServerEnv');
+        const contentType = span.binaryAnnotations.find(item => item.key == 'h_content-type');
+        const cookie = span.binaryAnnotations.find(item => item.key == 'h_cookie');
 
-      if(ServerEnv && ServerEnv.value=='online'){
-        //线上环境
-        const { search } = location
-        if(search.indexOf('debug=1') == -1){
-          alert('线上重放功能需要在当前页面url加debug=1参数;!!谨慎处理线上此功能');
-          return ;
+        if (ServerEnv && ServerEnv.value == 'online') {
+        // 线上环境
+          const {search} = location;
+          if (search.indexOf('debug=1') == -1) {
+            alert('线上重放功能需要在当前页面url加debug=1参数;!!谨慎处理线上此功能');
+            return;
+          }
         }
-      }
 
-      if(parmsList && parmsList.length){
-        parmsList.forEach(item => {
-          const t = item.key.split('_');
-          parms[t[1]] = typeof item.value == 'object' ? JSON.stringify(item.value) :item.value
-        })
-      }
-      
-      if(parms.csrfKey){
-        csrfKey = parms.csrfKey;
-        delete parms.csrfKey
-      }
-      
-      const cookieDto = [];
-      if(cookie && cookie.value){
-        cookie.value.split(';').forEach((item) => {
-          const res = item.split('=');
-          const key = res[0].trim();
-          const value = res.length ? res[1] : res.slice(1).join('');
-          // $.cookie(key, value);  
+        if (parmsList && parmsList.length) {
+          parmsList.forEach(item => {
+            const t = item.key.split('_');
+            parms[t[1]] = typeof item.value == 'object' ? JSON.stringify(item.value) : item.value;
+          });
+        }
+
+        if (parms.csrfKey) {
+          csrfKey = parms.csrfKey;
+          delete parms.csrfKey;
+        }
+
+        const cookieDto = [];
+        if (cookie && cookie.value) {
+          cookie.value.split(';').forEach((item) => {
+            const res = item.split('=');
+            const key = res[0].trim();
+            const value = res.length ? res[1] : res.slice(1).join('');
+          // $.cookie(key, value);
           // if(key == 'NTESSTUDYSI'){
           //   document.cookie = `${key}=${value};path=/;domain=.icourse163.org;max-age-1`;
           // }
-          cookieDto.push({
-            name: key,
-            value: encodeURIComponent(value)
-          })
-        })
-      }
+            cookieDto.push({
+              name: key,
+              value: encodeURIComponent(value)
+            });
+          });
+        }
 
-      
 
-      const fetchResend = () => {
-        const _search = csrfKey ? `?csrfKey=${csrfKey}`:'';
+        const fetchResend = () => {
+          const _search = csrfKey ? `?csrfKey=${csrfKey}` : '';
           let url = `//${host}${path.value}${_search}`;
           const headers = {
-                'X-Zipkin-Extension': '1',
-                'X-B3-Sampled': '1',
-                'X-B3-Flags': '1',
-                'X-B3-TraceId': traceId,
-                'X-B3-SpanId': traceId,
-                'Content-Type': 'application/x-www-form-urlencoded'
+            'X-Zipkin-Extension': '1',
+            'X-B3-Sampled': '1',
+            'X-B3-Flags': '1',
+            'X-B3-TraceId': traceId,
+            'X-B3-SpanId': traceId,
+            'Content-Type': 'application/x-www-form-urlencoded'
+          };
+          if (contentType && contentType.value) {
+            headers['Content-Type'] = contentType.value;
           }
-          if(contentType && contentType.value){
-            headers['Content-Type'] = contentType.value
-          }
-          if(parms['mob-token']){
+          if (parms['mob-token']) {
             url = url + '?mob-token=' + parms['mob-token'];
-            delete parms['mob-token']
+            delete parms['mob-token'];
           }
           $.ajax({
             url,
             type: method ? method.value : 'POST',
             data: parms,
             headers,
-            crossDomain:true,
-            xhrFields: {  
-                withCredentials: true // 这里设置了withCredentials  
-            }, 
+            crossDomain: true,
+            xhrFields: {
+              withCredentials: true // 这里设置了withCredentials
+            },
             dataType: 'json'
           }).done(res => {
-            const path = location.href.split('/traces/')
-            const finalTraceId = res.traceId || traceId
+            const path = location.href.split('/traces/');
+            const finalTraceId = res.traceId || traceId;
             setTimeout(() => {
-              window.open(`${path[0]}/traces/${finalTraceId}`)
+              window.open(`${path[0]}/traces/${finalTraceId}`);
             }, 200);
-          })
-      }
+          });
+        };
 
-      const cookieDo = (cb) => {
+        const cookieDo = (cb) => {
           $.ajax({
-          url: '//www.icourse163.org/member/coverCookie.do',
-          type: 'POST',
-          data: {
-            writeCookieAttriList: JSON.stringify(cookieDto),
-            domain: host.split('www.')[1]
-          },
-          headers : {
-              'content-type' : 'application/x-www-form-urlencoded'
-          },
-          crossDomain:true,
-          xhrFields: {  
+            url: '//www.icourse163.org/member/coverCookie.do',
+            type: 'POST',
+            data: {
+              writeCookieAttriList: JSON.stringify(cookieDto),
+              domain: host.split('www.')[1]
+            },
+            headers: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+            crossDomain: true,
+            xhrFields: {
               withCredentials: true
-          }, 
-        }).done((e) => {
-            cb && cb()
-        })
-      }
-      if(path.value.indexOf('/mob/') > -1){
-        //mob接口
-        fetchResend()
-      }else{
-        cookieDo(fetchResend)
-      }
-      
-    })
+            },
+          }).done((e) => {
+            cb && cb();
+          });
+        };
+        if (path.value.indexOf('/mob/') > -1) {
+        // mob接口
+          fetchResend();
+        } else {
+          cookieDo(fetchResend);
+        }
+      });
     }
   };
 
